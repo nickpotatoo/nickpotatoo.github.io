@@ -140,77 +140,54 @@
     <!-- 博客主体（自动读取blog文件夹下的博客文件） -->
     <main class="main">
         <div class="loading" id="loading">加载中...</div>
-        <div id=&#34;blog-list&#34;&gt;<!-- 自动读取的博客卡片将插入这里 --></div>
+        <div id="blog-list"></div>
     </main>
 
     <!-- 页脚（修改为土豆博客） -->
     <footer class="footer">
         <p>土豆博客 © 2026 | 记录日常，分享生活与思考</p>
     </footer>
+	<!-- 读取逻辑 -->
 
-    <!-- 自动读取博客文件的核心JS（指定格式：blog文件夹下YYYY-MM-DD-标题.html） -->
-    <script>
-        // 博客文件存放目录（根目录下的blog文件夹）
-        const blogDir = 'blog/';
-        // 自动读取blog文件夹下的所有.html文件（按指定格式命名）
-        function loadBlogs() {
-            const blogList = document.getElementById('blog-list');
-            const loading = document.getElementById('loading');
-            
-            // 模拟读取（实际部署到GitHub Pages可结合GitHub API，本地测试可手动添加文件路径）
-            // 此处可替换为实际读取逻辑，以下为示例模拟数据（对应blog文件夹下的文件）
-            const blogs = [
-                {
-                    filename: '2026-04-25-今日碎碎念.html',
-                    date: '2026-04-25',
-                    title: '今日碎碎念：平凡日子里的小美好',
-                    excerpt: '今天天气很好，晒了晒太阳，读了几页书，记录一下简单的快乐。偶尔也会思考生活的意义，大概就是珍惜每一个当下吧。'
-                },
-                {
-                    filename: '2026-04-20-学习笔记.html',
-                    date: '2026-04-20',
-                    title: '学习笔记：一些实用的小技巧',
-                    excerpt: '今天学习了一些常用的办公技巧，分享一个公式：<latex>y = ax + b</latex>，适用于简单的线性拟合，亲测好用～'
-                },
-                {
-                    filename: '2026-04-15-旅行随笔.html',
-                    date: '2026-04-15',
-                    title: '旅行随笔：一场说走就走的短途游',
-                    excerpt: '周末去了周边的小镇，感受慢生活的惬意，拍了很多好看的照片，记录下这份松弛感，下次还要去！'
-                }
-            ];
-            
-            // 隐藏加载提示，渲染博客卡片
-            loading.style.display = 'none';
-            if (blogs.length === 0) {
-                blogList.innerHTML = '<p style="text-align:center;color:#666;padding:50px 0;">暂无博客内容，快去添加吧～</p>';
-                return;
-            }
-            
-            // 按日期倒序排列（最新的在前面）
-            blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // 渲染每篇博客卡片
-            blogs.forEach(blog => {
-                const card = document.createElement('div');
-                card.className = 'note-card';
-                card.innerHTML = `
-                    <a href="${blogDir}${blog.filename}" class="note-title">${blog.title}</a>
-                    <div class="note-meta">发布于 ${blog.date} | 日常记录</div>
-                    <div class="note-excerpt">${blog.excerpt}</div>
-                    <a href="${blogDir}${blog.filename}" class="read-more">阅读全文 →</a>
-                `;
-                blogList.appendChild(card);
-            });
-            
-            // 重新渲染MathJax公式（确保动态加载的公式能正常显示）
-            if (window.MathJax) {
-                MathJax.typesetPromise();
-            }
-        }
-        
-        // 页面加载完成后自动读取博客
-        window.onload = loadBlogs;
-    </script>
+	<script>
+	async function loadBlogList() {
+	  const blogList = document.getElementById('blog-list');
+	  const loading = document.getElementById('loading');
+
+	  try {
+		// 加载 JSON 文件（根目录！）
+		const response = await fetch('/blog-list.json');
+		if (!response.ok) throw new Error("文件不存在或路径错误");
+		
+		const blogs = await response.json();
+
+		// 按日期最新排序
+		blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+		// 隐藏加载
+		if (loading) loading.style.display = 'none';
+
+		// 渲染文章
+		blogs.forEach(blog => {
+		  const card = document.createElement('div');
+		  card.className = 'note-card';
+		  card.innerHTML = `
+			<a href="${blog.path}" class="note-title">${blog.title}</a>
+			<div class="note-meta">发布于 ${blog.date}</div>
+			<div class="note-excerpt">${blog.excerpt}</div>
+			<a href="${blog.path}" class="read-more">阅读全文 →</a>
+		  `;
+		  blogList.appendChild(card);
+		});
+
+	  } catch (error) {
+		console.error("错误原因：", error);
+		if (loading) loading.style.display = 'none';
+		blogList.innerHTML = `<p>加载失败：${error.message}</p>`;
+	  }
+	}
+
+	window.onload = loadBlogList;
+	</script>
 </body>
 </html>
