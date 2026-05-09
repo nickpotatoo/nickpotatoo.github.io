@@ -428,12 +428,13 @@ body {
   border-radius: 8px;
   text-decoration: none;
   color: var(--text);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
 
 .portal-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 2px 12px rgba(91, 142, 185, 0.12);
+  box-shadow: 0 8px 24px rgba(91, 142, 185, 0.15);
+  transform: translateY(-4px);
 }
 
 .portal-card-icon {
