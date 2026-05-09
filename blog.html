@@ -1,193 +1,62 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>土豆博客 | 简约日常记录</title>
-    <style>
-		/*几乎所有的代码都是拿AI搓的，实在是没有精力去学习html之类的了QAQ*/
-        /* 全局简约样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #ffffff;
-            color: #333333;
-            line-height: 1.6;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        /* 导航栏 */
-        .nav {
-            padding: 25px 0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 40px;
-        }
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-            text-decoration: none;
-        }
-        .nav-links a {
-            margin-left: 30px;
-            text-decoration: none;
-            color: #666;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: #000;
-        }
-        /* 博客主体 */
-        .main {
-            margin-bottom: 80px;
-        }
-        /* 首页卡片（自动读取博客列表） */
-        .note-card {
-            padding: 30px;
-            border: 1px solid #f5f5f5;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            transition: box-shadow 0.3s;
-        }
-        .note-card:hover {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .note-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #333;
-            text-decoration: none;
-            display: block;
-        }
-        .note-meta {
-            font-size: 0.85rem;
-            color: #999;
-            margin-bottom: 15px;
-        }
-        .note-excerpt {
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-        }
-        .read-more {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        /* 页脚 */
-        .footer {
-            padding: 30px 0;
-            border-top: 1px solid #f0f0f0;
-            text-align: center;
-            color: #999;
-            font-size: 0.85rem;
-        }
-        /* 响应式适配 */
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .nav-links a {
-                margin: 0 10px;
-            }
-            .note-card {
-                padding: 20px;
-            }
-        }
-        /* 公式样式（保留公式渲染） */
-        .latex {
-            font-size: 1.1rem;
-            margin: 10px 0;
-        }
-        /* 加载提示样式 */
-        .loading {
-            text-align: center;
-            padding: 50px 0;
-            color: #666;
-        }
-    </style>
-    <!-- 引入MathJax，保留公式渲染功能 -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="土豆博客 - 文章阅读">
+  <title id="page-title">文章 - 土豆博客</title>
+  <link rel="stylesheet" href="source/assets/css/style.css">
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+  <!-- highlight.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/markdown.min.js"></script>
+  <!-- marked.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <!-- 导航栏（修改为土豆博客） -->
-    <header class="nav">
-        <div class="nav-container">
-            <a href="index.html" class="logo">土豆博客</a>
-            <div class="nav-links">
-                <a href="index.html">首页</a>
-				<a href="blog.html">博客</a>
-                <a href="notes.html">笔记</a>
-                <a href="about.html">关于</a>
-            </div>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="logo">土豆博客</a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="notes.html">笔记</a>
+        <a href="about.html">关于</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <article>
+      <header class="article-header">
+        <h1 class="article-title" id="article-title"></h1>
+        <div class="article-meta">
+          <span id="article-date"></span>
+          <span class="article-category" id="article-category"></span>
         </div>
-    </header>
+        <div class="post-tags" id="article-tags" style="margin-top: 8px;"></div>
+      </header>
+      <div class="article-content" id="article-content"></div>
+    </article>
+    <div class="back-top">
+      <a href="index.html">← 返回首页</a>
+    </div>
+  </main>
 
-    <!-- 博客主体（自动读取blog文件夹下的博客文件） -->
-    <main class="main">
-        <div class="loading" id="loading">加载中...</div>
-        <div id="blog-list"></div>
-    </main>
+  <footer class="footer">
+    <p class="footer-slogan">慢慢记录，稳步成长</p>
+    <p>土豆个人学习笔记博客</p>
+  </footer>
 
-    <!-- 页脚（修改为土豆博客） -->
-    <footer class="footer">
-        <p>土豆博客 © 2026 | 记录日常，分享生活与思考</p>
-    </footer>
-	<!-- 读取逻辑 -->
-
-	<script>
-	async function loadBlogList() {
-	  const blogList = document.getElementById('blog-list');
-	  const loading = document.getElementById('loading');
-
-	  try {
-		// 加载 JSON 文件（根目录！）
-		const response = await fetch('/blog-list.json');
-		if (!response.ok) throw new Error("文件不存在或路径错误");
-		
-		const blogs = await response.json();
-
-		// 按日期最新排序
-		blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-		// 隐藏加载
-		if (loading) loading.style.display = 'none';
-
-		// 渲染文章
-		blogs.forEach(blog => {
-		  const card = document.createElement('div');
-		  card.className = 'note-card';
-		  card.innerHTML = `
-			<a href="${blog.path}" class="note-title">${blog.title}</a>
-			<div class="note-meta">发布于 ${blog.date}</div>
-			<div class="note-excerpt">${blog.excerpt}</div>
-			<a href="${blog.path}" class="read-more">阅读全文 →</a>
-		  `;
-		  blogList.appendChild(card);
-		});
-
-	  } catch (error) {
-		console.error("错误原因：", error);
-		if (loading) loading.style.display = 'none';
-		blogList.innerHTML = `<p>加载失败：${error.message}</p>`;
-	  }
-	}
-
-	window.onload = loadBlogList;
-	</script>
+  <script src="source/assets/js/main.js"></script>
+  <script src="source/assets/js/blog-loader.js"></script>
 </body>
 </html>

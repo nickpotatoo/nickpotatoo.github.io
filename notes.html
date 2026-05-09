@@ -1,166 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全部笔记 | 土豆博客</title>
-    <style>
-        /* 与首页样式一致，保持简约白风格 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #ffffff;
-            color: #333333;
-            line-height: 1.6;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .nav {
-            padding: 25px 0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 40px;
-        }
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-            text-decoration: none;
-        }
-        .nav-links a {
-            margin-left: 30px;
-            text-decoration: none;
-            color: #666;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: #000;
-        }
-        .main {
-            margin-bottom: 80px;
-        }
-        .notes-list {
-            list-style: none;
-        }
-        .notes-item {
-            padding: 20px 0;
-            border-bottom: 1px solid #f5f5f5;
-        }
-        .notes-item a {
-            text-decoration: none;
-            color: #333;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-        .notes-meta {
-            font-size: 0.85rem;
-            color: #999;
-            margin-top: 8px;
-        }
-        .footer {
-            padding: 30px 0;
-            border-top: 1px solid #f0f0f0;
-            text-align: center;
-            color: #999;
-            font-size: 0.85rem;
-        }
-        .loading {
-            text-align: center;
-            padding: 50px 0;
-            color: #666;
-        }
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .nav-links a {
-                margin: 0 10px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="土豆博客 - 随笔笔记">
+  <title>笔记 - 土豆博客</title>
+  <link rel="stylesheet" href="source/assets/css/style.css">
 </head>
 <body>
-    <header class="nav">
-        <div class="nav-container">
-            <a href="index.html" class="logo">土豆博客</a>
-            <div class="nav-links">
-                <a href="index.html">首页</a>
-				<a href="blog.html">博客</a>
-                <a href="notes.html">全部笔记</a>
-                <a href="about.html">关于</a>
-            </div>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="logo">土豆博客</a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="notes.html">笔记</a>
+        <a href="about.html">关于</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <h1 class="page-title">笔记</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 32px; font-size: 0.92rem;">
+      碎片化笔记，随手记录的想法与片段。
+    </p>
+
+    <ul class="notes-list" id="notes-list">
+      <li class="note-item">
+        <div class="note-date">2026-05-09</div>
+        <div class="note-content">
+          博客上线了。从零搭建一个纯静态博客，不用任何框架和构建工具，
+          只靠 HTML + CSS + JS 和几个 CDN 库。轻量、干净、完全掌控。
         </div>
-    </header>
+      </li>
+      <li class="note-item">
+        <div class="note-date">2026-05-01</div>
+        <div class="note-content">
+          五一假期开始，计划读两本书：《程序员修炼之道》和《深入理解计算机系统》。
+          先立个 flag，后续更新读书笔记。
+        </div>
+      </li>
+    </ul>
+  </main>
 
-    <main class="main">
-        <h2 style="margin-bottom: 30px; font-weight: 600;">全部博客笔记</h2>
-        <div class="loading" id="loading">加载中...</div>
-        <ul class="notes-list&#34; id=&#34;all-notes&#34;&gt;<!-- 自动读取的全部笔记将插入这里 --></ul>
-    </main>
+  <footer class="footer">
+    <p class="footer-slogan">慢慢记录，稳步成长</p>
+    <p>土豆个人学习笔记博客</p>
+  </footer>
 
-    <footer class="footer">
-        <p>土豆博客 © 2026 | 记录日常，分享生活与思考</p>
-    </footer>
-
-    <!-- 自动读取全部博客文件的JS -->
-    <script>
-        const blogDir = 'blog/';
-        function loadAllNotes() {
-            const notesList = document.getElementById('all-notes');
-            const loading = document.getElementById('loading');
-            
-            // 与首页同步的博客数据（实际部署可统一调用接口，避免重复）
-            const blogs = [
-                {
-                    filename: '2026-04-25-今日碎碎念.html',
-                    date: '2026-04-25',
-                    title: '今日碎碎念：平凡日子里的小美好' 
-                },
-                {
-                    filename: '2026-04-20-学习笔记.html',
-                    date: '2026-04-20',
-                    title: '学习笔记：一些实用的小技巧' 
-                },
-                {
-                    filename: '2026-04-15-旅行随笔.html',
-                    date: '2026-04-15',
-                    title: '旅行随笔：一场说走就走的短途游' 
-                }
-            ];
-            
-            loading.style.display = 'none';
-            if (blogs.length === 0) {
-                notesList.innerHTML = '<li class="notes-item"><p style="color:#666;">暂无博客内容</p></li>';
-                return;
-            }
-            
-            // 按日期倒序排列
-            blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // 渲染全部笔记列表
-            blogs.forEach(blog => {
-                const li = document.createElement('li');
-                li.className = 'notes-item';
-                li.innerHTML = `
-                    <a href="${blogDir}${blog.filename}">${blog.title}</a>
-                    <div class="notes-meta">${blog.date} | 日常记录</div>
-                `;
-                notesList.appendChild(li);
-            });
-        }
-        
-        window.onload = loadAllNotes;
-    </script>
+  <script src="source/assets/js/main.js"></script>
 </body>
 </html>

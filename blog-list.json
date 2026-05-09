@@ -1,8 +1,11 @@
 [
   {
-    "path": "/blog/2026-04-25-第一篇博客？.html",
-    "date": "2026-04-25",
-    "title": "第一篇博客？",
-    "excerpt": "没啥预览～"
+    "path": "source/_posts/2026-05-09-hello-world.md",
+    "title": "Hello World - 第一篇博客",
+    "date": "2026-05-09",
+    "category": "随笔",
+    "tags": ["博客", "建站"],
+    "sticky": true,
+    "excerpt": "土豆博客正式上线！记录从零搭建个人静态博客的过程，聊聊为什么选择纯静态方案。"
   }
 ]

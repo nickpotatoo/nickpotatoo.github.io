@@ -1,114 +1,67 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于 | 土豆博客</title>
-    <style>
-        /* 与首页样式一致，保持简约白风格 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #ffffff;
-            color: #333333;
-            line-height: 1.6;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .nav {
-            padding: 25px 0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 40px;
-        }
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-            text-decoration: none;
-        }
-        .nav-links a {
-            margin-left: 30px;
-            text-decoration: none;
-            color: #666;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: #000;
-        }
-        .main {
-            margin-bottom: 80px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .about-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .about-content p {
-            margin-bottom: 20px;
-            font-size: 1rem;
-            color: #666;
-        }
-        .footer {
-            padding: 30px 0;
-            border-top: 1px solid #f0f0f0;
-            text-align: center;
-            color: #999;
-            font-size: 0.85rem;
-        }
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .nav-links a {
-                margin: 0 10px;
-            }
-            .about-title {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="关于土豆博客 - 个人技术笔记与学习归档">
+  <title>关于 - 土豆博客</title>
+  <link rel="stylesheet" href="source/assets/css/style.css">
 </head>
 <body>
-    <header class="nav">
-        <div class="nav-container">
-            <a href="index.html" class="logo">土豆博客</a>
-            <div class="nav-links">
-                <a href="index.html">首页</a>
-				<a href="blog.html">博客</a>
-                <a href="notes.html">全部笔记</a>
-                <a href="about.html">关于</a>
-            </div>
-        </div>
-    </header>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="logo">土豆博客</a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="notes.html">笔记</a>
+        <a href="about.html">关于</a>
+      </div>
+    </div>
+  </nav>
 
-    <main class="main">
-        <h1 class="about-title">关于土豆博客</h1>
-        <div class="about-content">
-            <p>土豆博客，一个简约干净的个人日常博客，用来记录生活碎片、学习笔记、旅行随笔，无关复杂，只为留存每一份简单的美好与思考。</p>
-            <p>博客采用纯白色简约主题，无多余装饰，专注内容本身，同时保留了公式渲染功能，方便记录学习中的公式、技巧，适配日常记录的各种场景。</p>
-            <p>框架支持自动读取指定格式的博客文件，只需在根目录「blog」文件夹内，按「YYYY-MM-DD-标题.html」格式创建博客文件，首页和全部笔记页面会自动加载内容，无需手动添加，部署简单，可直接上传到GitHub Pages使用。</p>
-            <p>愿这里成为一个小小的避风港，记录成长，分享生活，不负时光，慢慢前行～</p>
-        </div>
-    </main>
+  <main class="main">
+    <h1 class="page-title">关于</h1>
 
-    <footer class="footer">
-        <p>土豆博客 © 2026 | 记录日常，分享生活与思考</p>
-    </footer>
+    <div class="about-section">
+      <h2>关于博客</h2>
+      <p>
+        土豆博客是一个个人技术笔记与生活随笔博客。这里记录学习过程中的思考、踩过的坑、
+        读过的书和写过的代码。不求日更，但求每篇都有价值。
+      </p>
+    </div>
+
+    <div class="about-section">
+      <h2>关于博主</h2>
+      <p>
+        程序员 / 终身学习者 / 笔记爱好者。相信好的笔记是思维的延伸，
+        也是对抗遗忘的最佳工具。
+      </p>
+    </div>
+
+    <div class="about-section">
+      <h2>技术栈</h2>
+      <ul>
+        <li>纯静态 HTML + CSS + JavaScript</li>
+        <li>Markdown 渲染引擎：marked.js</li>
+        <li>数学公式：KaTeX</li>
+        <li>代码高亮：highlight.js</li>
+        <li>部署平台：GitHub Pages</li>
+      </ul>
+    </div>
+
+    <div class="about-section">
+      <h2>联系方式</h2>
+      <p>
+        如有交流或建议，欢迎通过 GitHub Issues 联系。
+      </p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-slogan">慢慢记录，稳步成长</p>
+    <p>土豆个人学习笔记博客</p>
+  </footer>
+
+  <script src="source/assets/js/main.js"></script>
 </body>
 </html>
