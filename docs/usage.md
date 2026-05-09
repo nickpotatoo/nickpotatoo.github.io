@@ -53,6 +53,22 @@ excerpt: "文章摘要，显示在首页卡片上"
 
 4. 推送至 GitHub，GitHub Pages 会自动部署。
 
+## 新增小记
+
+1. 在 `source/_notes/` 目录下新建 Markdown 文件，文件名格式：`YYYY-MM-DD-标题.md`
+2. Front-Matter 填写 title、date 和 excerpt：
+
+```yaml
+---
+title: "小记标题"
+date: "2026-05-09"
+excerpt: "摘要，显示在小记列表卡片上"
+---
+```
+
+3. 在 `notes-list.json` 中添加对应条目。
+4. 小记不支持分类/标签/代码高亮，仅渲染 Markdown 和 LaTeX。
+
 ## 文章规范
 
 ### 标题层级

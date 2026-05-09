@@ -133,6 +133,8 @@
               '<a class="post-title-link" href="notes.html?note=' + encodeURIComponent(note.path) + '">' +
                 escapeHtml(note.title) +
               '</a>' +
+              (note.excerpt ? '<p class="post-excerpt">' + escapeHtml(note.excerpt) + '</p>' : '') +
+              '</a>' +
               '</li>';
           }).join('');
         })

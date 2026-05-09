@@ -79,11 +79,12 @@ about.html              → 纯静态内容
 ## 新增小记流程
 
 1. 在 `source/_notes/` 创建 `YYYY-MM-DD-标题.md`
-2. Front-Matter 只需 title 和 date：
+2. Front-Matter 只需 title、date 和 excerpt：
    ```yaml
    ---
    title: "标题"
    date: "2026-05-09"
+   excerpt: "摘要，显示在小记列表卡片上"
    ---
    ```
 3. 在 `notes-list.json` 数组首部添加条目，`path` 指向 `source/_notes/xxx.md`
