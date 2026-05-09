@@ -91,13 +91,16 @@ def hello():
 
 ```
 blog/
-├── index.html              # 首页
+├── index.html              # 门户首页
+├── articles.html           # 文章列表页
 ├── blog.html               # 文章阅读页
 ├── notes.html              # 小记页
 ├── about.html              # 关于页
 ├── blog-list.json          # 文章索引
+├── notes-list.json         # 小记索引
 ├── source/
 │   ├── _posts/             # Markdown 文章
+│   ├── _notes/             # Markdown 小记
 │   ├── drafts/             # 草稿（不参与部署）
 │   ├── images/             # 图片（按月份分文件夹）
 │   └── assets/

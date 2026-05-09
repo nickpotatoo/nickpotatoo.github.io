@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="土豆博客 - 文章列表">
+  <title>文章 - 土豆博客</title>
+  <link rel="stylesheet" href="source/assets/css/style.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="logo">土豆博客</a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="articles.html">文章</a>
+        <a href="notes.html">小记</a>
+        <a href="about.html">关于</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <h1 class="page-title">文章</h1>
+    <ul class="post-list" id="post-list">
+      <li class="loading">加载中...</li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-slogan">慢慢记录，稳步成长</p>
+    <p>土豆个人学习笔记博客</p>
+  </footer>
+
+  <script src="source/assets/js/main.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var listEl = document.getElementById('post-list');
+    if (!listEl) return;
+
+    fetch('blog-list.json')
+      .then(function (res) { return res.json(); })
+      .then(function (posts) {
+        if (!posts.length) {
+          listEl.innerHTML = '<li class="loading">暂无文章</li>';
+          return;
+        }
+        listEl.innerHTML = posts.map(function (post) {
+          var tagsHtml = '';
+          if (post.tags && post.tags.length) {
+            tagsHtml = '<div class="post-tags">' +
+              post.tags.map(function (t) {
+                return '<span class="post-tag">' + escapeHtml(t) + '</span>';
+              }).join('') +
+              '</div>';
+          }
+          return '<li class="post-item">' +
+            '<div class="post-date">' + escapeHtml(post.date) + '</div>' +
+            '<a class="post-title-link" href="blog.html?post=' + encodeURIComponent(post.path) + '">' +
+              escapeHtml(post.title) +
+            '</a>' +
+            '<p class="post-excerpt">' + escapeHtml(post.excerpt || '') + '</p>' +
+            tagsHtml +
+            '</li>';
+        }).join('');
+      })
+      .catch(function () {
+        listEl.innerHTML = '<li class="loading">加载失败，请刷新重试</li>';
+      });
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+  })();
+  </script>
+</body>
+</html>

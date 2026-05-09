@@ -395,6 +395,66 @@ body {
   color: #c0392b;
 }
 
+/* ===== Portal (首页门户) ===== */
+.portal {
+  text-align: center;
+  padding: 24px 0 48px;
+}
+
+.portal-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.portal-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 48px;
+}
+
+.portal-cards {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.portal-card {
+  display: block;
+  width: 240px;
+  padding: 36px 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.portal-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(91, 142, 185, 0.12);
+}
+
+.portal-card-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.portal-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.portal-card-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
 /* ===== Back to Top ===== */
 .back-top {
   text-align: center;
@@ -473,5 +533,19 @@ body {
   .footer {
     margin-top: 40px;
     padding: 24px 0;
+  }
+
+  .portal-title {
+    font-size: 1.4rem;
+  }
+
+  .portal-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .portal-card {
+    width: 100%;
+    max-width: 320px;
   }
 }

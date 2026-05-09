@@ -19,11 +19,12 @@ python -m http.server 8080
 ## 架构与数据流
 
 ```
-index.html            → fetch blog-list.json → 渲染文章列表
-blog.html?post=xxx    → fetch xxx.md → 解析 Front-Matter → marked.parse() → KaTeX 渲染公式 → hljs 高亮代码
-notes.html            → 无参数：fetch notes-list.json → 渲染小记列表
-notes.html?note=xxx   → fetch xxx.md → 解析 Front-Matter → marked.parse() → KaTeX 渲染公式
-about.html            → 纯静态内容
+index.html              → 门户首页，导航入口
+articles.html           → fetch blog-list.json → 渲染文章列表
+blog.html?post=xxx      → fetch xxx.md → 解析 Front-Matter → marked.parse() → KaTeX 渲染公式 → hljs 高亮代码
+notes.html              → 无参数：fetch notes-list.json → 渲染小记列表
+notes.html?note=xxx     → fetch xxx.md → 解析 Front-Matter → marked.parse() → KaTeX 渲染公式
+about.html              → 纯静态内容
 ```
 
 小记比文章更轻量：只加载 marked.js + KaTeX，不引入 highlight.js。小记不含分类/标签/sticky，仅保留标题、日期。
@@ -53,7 +54,9 @@ about.html            → 纯静态内容
 - `source/assets/js/main.js` — 导航激活状态
 - `source/assets/js/blog-loader.js` — 文章加载与渲染管线（blog.html 用）
 - `docs/` — 使用文档与维护手册
-- `blog-list.json` — 文章元数据索引，首页加载
+- `index.html` — 门户首页，文章/小记入口
+- `articles.html` — 文章列表页，加载 blog-list.json
+- `blog-list.json` — 文章元数据索引，articles.html 加载
 - `notes-list.json` — 小记元数据索引，notes.html 加载
 
 ## 新增文章流程
