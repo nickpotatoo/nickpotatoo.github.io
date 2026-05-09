@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="土豆博客 - 随笔笔记">
-  <title>笔记 - 土豆博客</title>
+  <meta name="description" content="土豆博客 - 小记">
+  <title>小记 - 土豆博客</title>
   <link rel="stylesheet" href="source/assets/css/style.css">
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+  <!-- marked.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
   <nav class="nav">
@@ -13,34 +19,39 @@
       <a href="index.html" class="logo">土豆博客</a>
       <div class="nav-links">
         <a href="index.html">首页</a>
-        <a href="notes.html">笔记</a>
+        <a href="notes.html">小记</a>
         <a href="about.html">关于</a>
       </div>
     </div>
   </nav>
 
-  <main class="main">
-    <h1 class="page-title">笔记</h1>
-    <p style="color: var(--text-secondary); margin-bottom: 32px; font-size: 0.92rem;">
-      碎片化笔记，随手记录的想法与片段。
-    </p>
+  <main class="main" id="main">
+    <!-- 列表视图 -->
+    <div id="notes-list-view">
+      <h1 class="page-title">小记</h1>
+      <p style="color: var(--text-secondary); margin-bottom: 32px; font-size: 0.92rem;">
+        碎片化记录，随手写下的想法与片段。
+      </p>
+      <ul class="notes-list" id="notes-list">
+        <li class="loading">加载中...</li>
+      </ul>
+    </div>
 
-    <ul class="notes-list" id="notes-list">
-      <li class="note-item">
-        <div class="note-date">2026-05-09</div>
-        <div class="note-content">
-          博客上线了。从零搭建一个纯静态博客，不用任何框架和构建工具，
-          只靠 HTML + CSS + JS 和几个 CDN 库。轻量、干净、完全掌控。
-        </div>
-      </li>
-      <li class="note-item">
-        <div class="note-date">2026-05-01</div>
-        <div class="note-content">
-          五一假期开始，计划读两本书：《程序员修炼之道》和《深入理解计算机系统》。
-          先立个 flag，后续更新读书笔记。
-        </div>
-      </li>
-    </ul>
+    <!-- 详情视图 -->
+    <div id="notes-detail-view" style="display:none;">
+      <article>
+        <header class="article-header">
+          <h1 class="article-title" id="note-title"></h1>
+          <div class="article-meta">
+            <span id="note-date"></span>
+          </div>
+        </header>
+        <div class="article-content" id="note-content"></div>
+      </article>
+      <div class="back-top">
+        <a href="notes.html">← 返回小记列表</a>
+      </div>
+    </div>
   </main>
 
   <footer class="footer">
@@ -49,5 +60,122 @@
   </footer>
 
   <script src="source/assets/js/main.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var listView = document.getElementById('notes-list-view');
+    var detailView = document.getElementById('notes-detail-view');
+    var listEl = document.getElementById('notes-list');
+    var noteTitle = document.getElementById('note-title');
+    var noteDate = document.getElementById('note-date');
+    var noteContent = document.getElementById('note-content');
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function parseFrontMatter(md) {
+      var meta = {};
+      var content = md;
+      var fmMatch = md.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+      if (fmMatch) {
+        var lines = fmMatch[1].split('\n');
+        lines.forEach(function (line) {
+          var idx = line.indexOf(':');
+          if (idx > 0) {
+            var key = line.substring(0, idx).trim();
+            var value = line.substring(idx + 1).trim().replace(/^["']|["']$/g, '');
+            meta[key] = value;
+          }
+        });
+        content = md.substring(fmMatch[0].length);
+      }
+      return { meta: meta, content: content };
+    }
+
+    function renderMarkdown(html) {
+      if (typeof marked !== 'undefined') {
+        return marked.parse(html, { breaks: true, gfm: true });
+      }
+      return html;
+    }
+
+    function renderKatex(el) {
+      if (typeof renderMathInElement !== 'undefined') {
+        try {
+          renderMathInElement(el, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false }
+            ]
+          });
+        } catch (e) {
+          console.warn('KaTeX error:', e);
+        }
+      }
+    }
+
+    function loadNoteList() {
+      fetch('notes-list.json')
+        .then(function (res) { return res.json(); })
+        .then(function (notes) {
+          if (!notes.length) {
+            listEl.innerHTML = '<li class="loading">暂无小记</li>';
+            return;
+          }
+          listEl.innerHTML = notes.map(function (note) {
+            return '<li class="note-item">' +
+              '<div class="note-date">' + escapeHtml(note.date) + '</div>' +
+              '<a class="post-title-link" href="notes.html?note=' + encodeURIComponent(note.path) + '">' +
+                escapeHtml(note.title) +
+              '</a>' +
+              '</li>';
+          }).join('');
+        })
+        .catch(function () {
+          listEl.innerHTML = '<li class="loading">加载失败，请刷新重试</li>';
+        });
+    }
+
+    function loadNoteDetail(path) {
+      listView.style.display = 'none';
+      detailView.style.display = 'block';
+      noteContent.innerHTML = '<p class="loading">加载中...</p>';
+
+      fetch(path)
+        .then(function (res) {
+          if (!res.ok) throw new Error('加载失败 (' + res.status + ')');
+          return res.text();
+        })
+        .then(function (md) {
+          var parsed = parseFrontMatter(md);
+          noteTitle.textContent = parsed.meta.title || '';
+          noteDate.textContent = parsed.meta.date || '';
+          noteContent.innerHTML = renderMarkdown(parsed.content);
+          renderKatex(noteContent);
+        })
+        .catch(function (err) {
+          noteContent.innerHTML = '<p class="error-msg">' + escapeHtml(err.message) + '</p>';
+        });
+    }
+
+    function getNotePath() {
+      var params = new URLSearchParams(window.location.search);
+      return params.get('note');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var notePath = getNotePath();
+      if (notePath) {
+        loadNoteDetail(notePath);
+      } else {
+        loadNoteList();
+      }
+    });
+  })();
+  </script>
 </body>
 </html>

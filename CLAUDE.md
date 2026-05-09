@@ -19,11 +19,14 @@ python -m http.server 8080
 ## 架构与数据流
 
 ```
-index.html          → fetch blog-list.json → 渲染文章列表
-blog.html?post=xxx  → fetch xxx.md → 解析 Front-Matter → marked.parse() → KaTeX 渲染公式 → hljs 高亮代码
-about.html          → 纯静态内容
-notes.html          → 纯静态内容（后续可改为动态加载）
+index.html            → fetch blog-list.json → 渲染文章列表
+blog.html?post=xxx    → fetch xxx.md → 解析 Front-Matter → marked.parse() → KaTeX 渲染公式 → hljs 高亮代码
+notes.html            → 无参数：fetch notes-list.json → 渲染小记列表
+notes.html?note=xxx   → fetch xxx.md → 解析 Front-Matter → marked.parse() → KaTeX 渲染公式
+about.html            → 纯静态内容
 ```
+
+小记比文章更轻量：只加载 marked.js + KaTeX，不引入 highlight.js。小记不含分类/标签/sticky，仅保留标题、日期。
 
 **渲染管线**（`source/assets/js/blog-loader.js`）：
 1. `fetch(postPath)` 获取 Markdown 原文
@@ -43,13 +46,15 @@ notes.html          → 纯静态内容（后续可改为动态加载）
 ## 目录结构（不可随意改动）
 
 - `source/_posts/` — Markdown 正式文章，文件名 `YYYY-MM-DD-标题.md`
+- `source/_notes/` — Markdown 小记，文件名 `YYYY-MM-DD-标题.md`，比文章更轻量（无分类/标签/高亮）
 - `source/drafts/` — 草稿，不参与部署
 - `source/images/` — 图片，按月份子目录归档，命名 `YYYYMMDD_序号_描述.ext`
 - `source/assets/css/style.css` — 全局样式，CSS 变量定义在 `:root`
 - `source/assets/js/main.js` — 导航激活状态
-- `source/assets/js/blog-loader.js` — 文章加载与渲染管线
+- `source/assets/js/blog-loader.js` — 文章加载与渲染管线（blog.html 用）
 - `docs/` — 使用文档与维护手册
-- `blog-list.json` — 文章元数据索引，首页和 blog.html 都依赖它
+- `blog-list.json` — 文章元数据索引，首页加载
+- `notes-list.json` — 小记元数据索引，notes.html 加载
 
 ## 新增文章流程
 
@@ -67,6 +72,19 @@ notes.html          → 纯静态内容（后续可改为动态加载）
    ```
 3. 在 `blog-list.json` 数组首部添加同一条目，`path` 指向 `source/_posts/xxx.md`
 4. 本地 `python -m http.server 8080` 预览，确认无误后 git push 部署
+
+## 新增小记流程
+
+1. 在 `source/_notes/` 创建 `YYYY-MM-DD-标题.md`
+2. Front-Matter 只需 title 和 date：
+   ```yaml
+   ---
+   title: "标题"
+   date: "2026-05-09"
+   ---
+   ```
+3. 在 `notes-list.json` 数组首部添加条目，`path` 指向 `source/_notes/xxx.md`
+4. 小记不支持分类/标签/代码高亮，仅渲染 Markdown 和 LaTeX 公式
 
 ## 设计硬性约束
 
@@ -88,6 +106,7 @@ notes.html          → 纯静态内容（后续可改为动态加载）
 每次完成任务后，自动执行 git add 和 git commit，无需等待用户确认。
 commit message 格式：`[类型] 改动描述`，例如 `[新增] 添加文章 xxx`、`[修复] 修正公式渲染`、`[优化] 调整移动端样式`。
 类型标签：新增 / 修复 / 优化 / 重构 / 文档。
+在commit message后添加“此次commit由claude code执行”
 
 ## 禁止操作
 

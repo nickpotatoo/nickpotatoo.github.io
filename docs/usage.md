@@ -93,7 +93,7 @@ def hello():
 blog/
 ├── index.html              # 首页
 ├── blog.html               # 文章阅读页
-├── notes.html              # 随笔笔记页
+├── notes.html              # 小记页
 ├── about.html              # 关于页
 ├── blog-list.json          # 文章索引
 ├── source/
