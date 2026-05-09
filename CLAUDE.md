@@ -106,7 +106,11 @@ about.html            → 纯静态内容
 每次完成任务后，自动执行 git add 和 git commit，无需等待用户确认。
 commit message 格式：`[类型] 改动描述`，例如 `[新增] 添加文章 xxx`、`[修复] 修正公式渲染`、`[优化] 调整移动端样式`。
 类型标签：新增 / 修复 / 优化 / 重构 / 文档。
-在commit message后添加“此次commit由claude code执行”
+在commit message后添加”此次commit由claude code执行”
+
+## 文档同步
+
+修改任何功能后，必须同步更新 `docs/` 下的对应文档，确保文档与代码始终一致。
 
 ## 禁止操作
 
