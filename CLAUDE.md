@@ -14,6 +14,12 @@ python -m http.server 8080
 # 然后访问 http://localhost:8080
 
 # 新增文章后无需构建，刷新浏览器即可
+
+# 编译自动提交工具（首次使用前执行一次）
+gcc -Wall -Wextra -O2 -o autocommit.exe autocommit.c
+
+# 运行自动提交工具（更新内容后执行，自动 add → commit → push）
+./autocommit
 ```
 
 ## 架构与数据流
@@ -58,6 +64,9 @@ about.html              → 纯静态内容
 - `articles.html` — 文章列表页，加载 blog-list.json
 - `blog-list.json` — 文章元数据索引，articles.html 加载
 - `notes-list.json` — 小记元数据索引，notes.html 加载
+- `autocommit.c` — 自动提交工具的 C 源码
+- `autocommit.conf` — 自动提交配置文件，列出需要追踪的路径
+- `autocommit.exe` — 编译后的可执行文件（已加入 .gitignore）
 
 ## 新增文章流程
 
@@ -111,6 +120,29 @@ about.html              → 纯静态内容
 commit message 格式：`[类型] 改动描述`，例如 `[新增] 添加文章 xxx`、`[修复] 修正公式渲染`、`[优化] 调整移动端样式`。
 类型标签：新增 / 修复 / 优化 / 重构 / 文档。
 在commit message后添加”此次commit由claude code执行”
+
+## 自动提交工具（autocommit）
+
+项目根目录下的 `autocommit` 工具用于在更新内容后一键完成 `git add → git commit → git push` 流程。
+
+**工作原理**：读取 `autocommit.conf` 中列出的所有路径，依次执行 `git add`（逐个路径加引号安全添加）、`git commit -m “时间戳-进行了内容更新”`、`git push`。
+
+**适用范围**：该工具仅用于博客/小记等内容的常规更新推送。代码重构、CI 配置等非内容类提交仍应手动执行 git 操作并使用 `[类型] 描述` 格式的提交信息。
+
+**扩展新内容类型**（如视频博客、播客、图集等）：
+
+当需要新增内容形式时，按以下步骤操作即可自动纳入推送流程：
+
+1. 创建对应的内容目录（如 `source/_vlogs/`）和索引文件（如 `vlog-list.json`）
+2. 将新增的目录和索引文件路径追加到 `autocommit.conf`，每行一个
+3. 在 CLAUDE.md 中参照「新增文章流程」补充对应的新增规范
+4. 后续运行 `./autocommit` 时会自动包含新内容类型
+
+示例：新增视频博客时，在 `autocommit.conf` 末尾追加：
+```
+source/_vlogs
+vlog-list.json
+```
 
 ## 文档同步
 
